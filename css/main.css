@@ -1,0 +1,22 @@
+.three-d {
+    position:relative;
+    perspective: 800px;
+    perspective-origin: 50% 50%;
+    height: 500px;
+}
+
+div.header {
+    text-align: center;
+}
+
+div.left {
+    float: left;
+    transform-origin: top left;
+    transform: rotateY(30deg);
+}
+
+div.right {
+    float: right;
+    transform-origin: top right;
+    transform: rotateY(-30deg);
+}

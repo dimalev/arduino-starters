@@ -1,4 +1,5 @@
 const int BUTTON = 2;
+const int SERIAL_BROKEN = 3;
 const int SPEAKER = 5;
 
 const int TONES[] = {
@@ -27,204 +28,178 @@ const int NOTES[] = {
   1516  // E+ (9)
 };
 
-//const int SHARPS[] = {
-//  277, // C# (0)
-//  311, // D# (1)
-//  -1, 
-//  370, // F# (2)
-//  415, // G# (3)
-//  466, // A# (4)
-//  -1, 
-//  554  // C# (5)
-//};
 
-#define DUR 1200
+const unsigned long P = 1200;
+const unsigned long P16 = (1.0 / 16.0) * P;
 
-const unsigned long P16 = (1.0 / 16.0) * DUR;
-const unsigned long P8 = (1.0 / 8.0) * DUR;
-const unsigned long P4 = (1.0 / 4.0) * DUR;
-const unsigned long P2 = (1.0 / 2.0) * DUR;
-const unsigned long P1 = (1.0 / 1.0) * DUR;
+int songsLength[4] = {0, 0, 0, 0};
+byte* songs[4] = {nullptr, nullptr, nullptr, nullptr};
 
-unsigned char AMELIE[][2] = {
-  {5, B00100},
-  {6, B00100},
-  {7, B00100},
-  {6, B00100},
-  {7, B00100},
-  {8, B01100},
-  {8, B01000},
-  {8, B00010},
-  {7, B00010},
-  {6, B01100},
-  {5, B01100},
-  {8, B01100},
-  {8, B00010},
-  {9, B00010},
-  {8, B00010},
-  {7, B00010},
-  {8, B00010},
-  {7, B00010},
+// every command or data MUST end with \n
+// if data part is not ended with \n - it is discarded, and all data before \n is junk
+class SerialProtocol {
+private:
+  const char terminal = '\n';
+  const int chunkSize = 30;
 
-  {6, B01100}, 
-  {5, B01100},
-  {7, B01100},
-  {7, B01000},
-  {7, B00010},
-  {6, B00010},
-  {2, B01100},
-  {3, B01000},
-  {2, B00100},
-  {7, B01100},
-  {7, B00010},
-  {8, B00010},
-  {7, B00010},
-  {6, B00010},
-  {7, B00010},
-  {6, B00010},
+  char mBuffer[20]; // command buffer
+  int mAfterLast = 0; // byte after last in buffer
 
-  {2, B01100},
-   {2, B00100},
-   {3, B00100},
-   {2, B00100},
-  {8, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-   {9, B00010},
-   {2, B00010},
-   {3, B00010},
-   {7, B00010},
-   {2, B00010},
-   {3, B00010},
-  {6, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-   {7, B00010},
-   {0, B00010},
-   {6, B00010},
-   {2, B00010},
-   {1, B00010},
-   {0, B00010},
+  byte* mRandomData = nullptr; // random data read
+  int mRandomDataSize = -1; // size of data reading
+  int mRandomDataSizeLoaded = 0; // number of bytes of data size read
+  int mRandomDataLoaded = -1; // currenly loaded data
 
-  {8, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-   {9, B00010},
-   {2, B00010},
-   {3, B00010},
-   {7, B00010},
-   {2, B00010},
-   {3, B00010},
-  {6, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-   {5, B00010},
-   {0, B00010},
-   {6, B00010},
-   {1, B00010},
-   {5, B00010},
-   {0, B00010},
-  {7, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-   {8, B00010},
-   {2, B00010},
-   {3, B00010},
-   {2, B00010},
-   {3, B00010},
-   {1, B00010},
+public:
+  char* readNextCommand() {
+    if(isBroken && !skipBroken()) return nullptr;
+    while(Serial.available() > 0) {
+      char newChar = (char) Serial.read();
+      if(newChar == terminal) {
+        mBuffer[mAfterLast] = '\0';
+        mAfterLast = 0;
+        return mBuffer;
+      } else {
+        if(mAfterLast == 19) mAfterLast = 0;
+        mBuffer[mAfterLast++] = newChar;
+      }
+    }
+    return nullptr;
+  }
 
-  {0, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-   {2, B00010},
-   {1, B00010},
-   {0, B00010},
-   {2, B00010},
-   {1, B00010},
-   {0, B00010},
-  {7, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-  {3, B00010},
-  {2, B00010},
-   {8, B00010},
-   {2, B00010},
-   {3, B00010},
-   {2, B00010},
-   {3, B00010},
-   {1, B00010},
-  {0, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-  {2, B00010},
-  {1, B00010},
-   {6, B00010},
-   {1, B00010},
-   {0, B00010},
-   {2, B00010},
-   {7, B00010},
-   {0, B00010},
+  byte* readRandomData() {
+    if(isBroken && !skipBroken()) return nullptr;
+    if(mRandomDataSizeLoaded == 0) {
+      mRandomDataSize = 0;
+    }
+    while(mRandomDataSizeLoaded < 2) {
+      if(Serial.available() > 0) {
+        byte newSizeChunk = (byte) Serial.read();
+        mRandomDataSize += newSizeChunk << ((1 - mRandomDataSizeLoaded) * 8);
+        if(++mRandomDataSizeLoaded == 2) {
+          if(mRandomDataSize < 1024) {
+            mRandomData = (byte*) malloc(mRandomDataSize * sizeof(byte));
+            mRandomDataLoaded = 0;
+          } else {
+            setBroken();
+            return nullptr;
+          }
+        }
+      } else return nullptr;
+    }
+    while(mRandomDataLoaded < mRandomDataSize) {
+      if(Serial.available() > 0) {
+        mRandomData[mRandomDataLoaded++] = (byte) Serial.read();
+        if(mRandomDataLoaded % chunkSize == 0) {
+          Serial.println(F("CHUNK-OK"));
+        }
+      } else {
+        return nullptr;
+      }
+    }
+    if(Serial.available() > 0) {
+      char lastChar = (char) Serial.read();
+      if(terminal == lastChar) {
+        return mRandomData;
+      } else {
+        delete mRandomData;
+        setBroken();
+      }
+    }
+  }
 
-  {0, B00000}
+  bool const getIsBroken() { return isBroken; }
+  int const getLastRandomDataSize() { return mRandomDataSize; }
+
+protected:
+  bool isBroken = false;
+  bool skipBroken() {
+    if(Serial.available() > 0) {
+      char lastChar = (char) Serial.read();
+      if(terminal == lastChar) {
+        digitalWrite(SERIAL_BROKEN, LOW);
+        isBroken = false;
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  void setBroken() {
+    digitalWrite(SERIAL_BROKEN, HIGH);
+    isBroken = true;
+    // we should have serial broken - read up to most recent \n
+  }
 };
+
+bool isWaitingForCommand = true;
+bool isWaitingForSong = false;
+int songToLoad = 0;
 
 int buttonMode = LOW;
 int buttonModePrev = LOW;
+
+SerialProtocol protocol;
 
 void setup() {
   // put your setup code here, to run once:
   pinMode(BUTTON, INPUT);
   pinMode(SPEAKER, OUTPUT);
+  pinMode(SERIAL_BROKEN, OUTPUT);
+  digitalWrite(SERIAL_BROKEN, LOW);
   noTone(SPEAKER);
   Serial.begin(9600);
 }
 
 void loop() {
+  if(isWaitingForCommand) {
+    char* command = protocol.readNextCommand();
+    if(nullptr != command) {
+      if(strcmp("SONG0", command) == 0) {
+        isWaitingForCommand = false;
+        isWaitingForSong = true;
+        songToLoad = 0;
+        Serial.println("OK");
+      } else Serial.println("FAILED");
+    }
+  }
+  if(isWaitingForSong) {
+    byte* newSong = protocol.readRandomData();
+    if(nullptr == newSong) {
+      if(protocol.getIsBroken()) {
+        isWaitingForCommand = true;
+        isWaitingForSong = false;
+        Serial.println("FAILED");
+      }
+    } else {
+      Serial.println("OK");
+      songsLength[songToLoad] = protocol.getLastRandomDataSize();
+      songs[songToLoad] = newSong;
+      isWaitingForCommand = true;
+      isWaitingForSong = false;
+    }
+  }
   // put your main code here, to run repeatedly:
+  int currentSongId = -1;
   buttonMode = digitalRead(BUTTON);
   if(buttonMode != buttonModePrev) {
     if(buttonMode == HIGH) {
-      int i = 0;
-      while(AMELIE[i][1] != 0) {
-        decodeNote(AMELIE[i][0], AMELIE[i][1]);
-        ++i;
-      }
-      noTone(SPEAKER);
+      currentSongId = 0;
     }
   }
   buttonModePrev = buttonMode;
+  if(currentSongId >= 0 && nullptr != songs[currentSongId]) {
+    for(int i = 0; i < songsLength[currentSongId]; ++i) {
+      decodeNote(songs[currentSongId][2 * i], songs[currentSongId][2 * i + 1]);
+      ++i;
+    }
+  }
+  noTone(SPEAKER);
   delay(40);
 }
 
 void decodeNote(int freqind, int durind) {
-  long dur = 0;
-  if(durind & B10000) dur += P1;
-  if(durind & B01000) dur += P2;
-  if(durind & B00100) dur += P4;
-  if(durind & B00010) dur += P8;
-  if(durind & B00001) dur += P16;
-  tone(SPEAKER, TONES[freqind], dur);
-  delay(dur);
+  tone(SPEAKER, TONES[freqind], durind * P16);
+  delay(durind * P16);
 }
 
