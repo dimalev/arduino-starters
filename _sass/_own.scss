@@ -1,0 +1,38 @@
+h1 {
+  background-color: peachpuff;
+  border-left: solid 4px orange;
+  padding: 4px 0 4px 8px;
+}
+
+.page-link {
+  text-transform: capitalize;
+  padding: 0 5px;
+
+  &.visited {
+      border-bottom: solid 3px black;
+      background-color: peachpuff;
+      display: inline-block;
+  }
+}
+
+ul.posts {
+  margin-left: 0;
+  margin-top: $spacing-unit;
+
+  li {
+    margin-bottom: $spacing-unit / 2;
+    list-style-type: none;
+    padding: 8px;
+    background-color: #006669;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: $big-font-size;
+
+    a {
+      color: white;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

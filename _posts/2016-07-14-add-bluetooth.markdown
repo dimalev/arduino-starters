@@ -2,7 +2,7 @@
 layout: post
 title:  "Adding bluetooth to Arduino"
 date:   2016-07-14 01:29:55 +0300
-categories: connected
+category: connected
 ---
 
 This is done in two steps: first - configure your bluetooth adapter to be ready to get connections, e.g. set visible name and PIN; and second - plug it to your Arduino!

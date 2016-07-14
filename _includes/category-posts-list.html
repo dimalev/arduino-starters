@@ -1,0 +1,9 @@
+List of posts in {{ page.category }}:
+
+<ul class="posts">
+  {% for post in site.categories[page.category] %}
+    <li>
+      <a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a>
+    </li>
+  {% endfor %}
+</ul>

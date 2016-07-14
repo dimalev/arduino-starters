@@ -14,9 +14,13 @@
       </a>
 
       <div class="trigger">
-        {% for my_page in site.pages %}
-          {% if my_page.title %}
-          <a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a>
+        {% for my_category in site.categories %}
+          {% if page.category == my_category.first %}
+            <a class="page-link visited"
+               href="{{ site.baseurl }}/{{ my_category | first }}">{{ my_category | first }}</a>
+          {% else %}
+            <a class="page-link"
+               href="{{ site.baseurl }}/{{ my_category | first }}">{{ my_category | first }}</a>
           {% endif %}
         {% endfor %}
       </div>
