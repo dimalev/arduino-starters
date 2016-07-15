@@ -168,6 +168,8 @@
  */
 .page-content {
     padding: $spacing-unit 0;
+    font-family: OpenSans;
+    font-weight: 300;
 }
 
 .page-heading {
@@ -214,9 +216,12 @@
 
 .post-content {
     margin-bottom: $spacing-unit;
+    line-height: 1.5;
+    text-shadow: 1px 1px 0.5px #aaaaaa;
+    text-align: justify;
 
     h2 {
-        font-size: 32px;
+        font-size: 26px;
 
         @include media-query($on-laptop) {
             font-size: 28px;
@@ -224,7 +229,7 @@
     }
 
     h3 {
-        font-size: 26px;
+        font-size: 20px;
 
         @include media-query($on-laptop) {
             font-size: 22px;
@@ -232,7 +237,7 @@
     }
 
     h4 {
-        font-size: 20px;
+        font-size: 16px;
 
         @include media-query($on-laptop) {
             font-size: 18px;
