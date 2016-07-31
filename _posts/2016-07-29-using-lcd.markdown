@@ -1,0 +1,82 @@
+---
+layout: post
+title:  "Using LCD"
+date:   2016-07-14 01:29:55 +0300
+category: display
+---
+
+Small OLED I2C display allows display many information with just 2 (Analog) control lines. See name of controller to select library. I had SSD1306.
+
+There are mey libraries which allow using this display.
+
+Wiring
+------
+
+I2C protocol states how should wiring be done (according to [Wire][arduino-wire-tutorial] library):
+
+|---------+------------------|
+| *Board* | *I2C / TWI pins* |
+|-------|:---------------:|
+| Uno, Ethernet | A4 (SDA), A5 (SCL) |
+| Mega2560      | 20 (SDA), 21 (SCL) |
+| Leonardo      | 2 (SDA), 3 (SCL) |
+| Due           | 20 (SDA), 21 (SCL), SDA1, SCL1 |
+|---------+------------------|
+
+If your board is not listed (for example my Arduino Pro Mini), see their personal pages with specifications (for Pro Mini - [it][pro-mini-home] says I2C is same as for Uno).
+
+Adafruit SSD1306
+----------------
+
+This one is claimed to be most popular. I've installed it, and even managed to compile example. As a result - almost all of my memory was spent on this library, and I could not end up with any visible result.
+
+U8glib
+------
+
+Also available in Arduino libraries collection. Easy to use. Long to compile, but resulting binary is surprizingly (compared to adafruit) small.
+
+~~~ c++
+#include "U8glib.h"
+
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE|U8G_I2C_OPT_DEV_0);  // I2C / TWI
+
+void setup() {
+  // put your setup code here, to run once:
+  u8g.setFont(u8g_font_unifont);
+  u8g.drawStr( 0, 22, "Hello World!");
+
+  // assign default color value
+  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
+    u8g.setColorIndex(255);     // white
+  } else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
+    u8g.setColorIndex(3);       // max intensity
+  } else if ( u8g.getMode() == U8G_MODE_BW ) {
+    u8g.setColorIndex(1);       // pixel on
+  } else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
+    u8g.setHiColorByRGB(255,255,255);
+  }
+}
+
+void loop() {
+  u8g.firstPage();
+  do {
+    u8g.setFont(u8g_font_unifont);
+    u8g.drawStr( 0, 18, "hello,");
+    u8g.drawStr( 0, 36, "how are you?");
+  } while( u8g.nextPage() );
+
+  delay(1000);
+}
+~~~
+
+[U8glib Github][u8glib-github] project. See for details.
+
+Projects
+--------
+
+See [Hygrometer on LCD][hygrometer-on-lcd-github]. Reads air humidity and air quality, then displays it on LCD screen.
+
+[u8glib-github]: https://github.com/olikraus/u8glib
+[arduino-wire-tutorial]: https://www.arduino.cc/en/Reference/Wire
+[pro-mini-home]: https://www.arduino.cc/en/Main/ArduinoBoardProMini
+[hygrometer-on-lcd-github]: https://github.com/dimalev/arduino-starters/tree/master/hygrometer-on-lcd
