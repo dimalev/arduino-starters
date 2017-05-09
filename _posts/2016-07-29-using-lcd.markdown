@@ -12,6 +12,8 @@ There are mey libraries which allow using this display.
 Wiring
 ------
 
+My display used 3.3V, so be careful!
+
 I2C protocol states how should wiring be done (according to [Wire][arduino-wire-tutorial] library):
 
 |---------+------------------|
@@ -74,9 +76,9 @@ void loop() {
 Projects
 --------
 
-See [Hygrometer on LCD][hygrometer-on-lcd-github]. Reads air humidity and air quality, then displays it on LCD screen.
+See [Humidity on LCD][humidity-on-lcd-github]. Reads air humidity and air quality, then displays it on LCD screen.
 
 [u8glib-github]: https://github.com/olikraus/u8glib
 [arduino-wire-tutorial]: https://www.arduino.cc/en/Reference/Wire
 [pro-mini-home]: https://www.arduino.cc/en/Main/ArduinoBoardProMini
-[hygrometer-on-lcd-github]: https://github.com/dimalev/arduino-starters/tree/master/hygrometer-on-lcd
+[humidity-on-lcd-github]: https://github.com/dimalev/arduino-starters/tree/master/humidity-on-lcd
