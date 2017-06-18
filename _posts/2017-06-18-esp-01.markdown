@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "ESP-01"
+date:   2017-06-18 23:27:00 +0300
+category: connected
+---
+
+`ESP-01` allows connecting IoT device to WIFI. They can communicate through
+[Serial port]({{ site.baseurl }}{% post_url 2016-07-14-serial-protocol %})
+using commands, which will be listed shortly.
+
+It operates on `3.3v`, so when connecting it to device operating on `5v` like
+arduino board, or some `USB - UART TTL` converters one must use Level Converter.
+
+To initiate communication - `CH_PD` must be pulled to `3.3v`.
+
+Connecting to USB
+-----------------
+
+I've used `CH340G` based `USB - UART TTL` converter. It seems that power available
+on it's `3.3v` power supply is not enough, so external power source is required.
+
+Best way to quickly plug `ESP-01` to converter, is to build (or buy) nice breakout
+board. It must be possible to easily plug both devices into it, and execute usual
+operations fast. For example, pull `CH_PD` to `3.3v` or click `RESET` button.
+
+My Current Problems
+-------------------
+
+Seems to be not that easy to build breakout board, mainly - how to well solder it.
+
+Also, it must be possible to use either native power supply, or (as in my case) -
+to put third party power support. This should be configurable.
+
+Additional Resources
+--------------------
+
+[ESP Wiki page][esp-wiki] with detailed information on some aspects.
+
+[20 Steps on Instructables][esp-instructables] with nice how-to about ESP.
+
+[esp-wiki]: http://www.esp8266.com/wiki/doku.php?id=getting-started-with-the-esp8266
+[esp-instructables]: http://www.instructables.com/id/Getting-Started-With-the-ESP8266-ESP-01/
+
+[serial]: https://github.com/dimalev/arduino-starters/tree/master/stepmotor
