@@ -42,4 +42,4 @@ Additional Resources
 [esp-wiki]: http://www.esp8266.com/wiki/doku.php?id=getting-started-with-the-esp8266
 [esp-instructables]: http://www.instructables.com/id/Getting-Started-With-the-ESP8266-ESP-01/
 
-[serial]: https://github.com/dimalev/arduino-starters/tree/master/stepmotor
+[serial]: https://github.com/dmytrolev/IoT/tree/master/stepmotor

@@ -27,4 +27,4 @@ Projects
 
 See [Step Motor][stepmotor-github]. It rotates step motor for some time, them makes delay for one second and repeat.
 
-[stepmotor-github]: https://github.com/dimalev/arduino-starters/tree/master/stepmotor
+[stepmotor-github]: https://github.com/dmytrolev/IoT/tree/master/stepmotor

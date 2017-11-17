@@ -10,4 +10,4 @@ To operate long time using some energy source there has to be used some powersav
 See [sleep][sleep-root] for example usage.
 
 [sleep-mode-site]: http://playground.arduino.cc/Learning/ArduinoSleepCode
-[sleep-root]: https://github.com/dimalev/arduino-starters/tree/master/sleep
+[sleep-root]: https://github.com/dmytrolev/IoT/tree/master/sleep

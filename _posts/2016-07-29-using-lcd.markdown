@@ -81,4 +81,4 @@ See [Humidity on LCD][humidity-on-lcd-github]. Reads air humidity and air qualit
 [u8glib-github]: https://github.com/olikraus/u8glib
 [arduino-wire-tutorial]: https://www.arduino.cc/en/Reference/Wire
 [pro-mini-home]: https://www.arduino.cc/en/Main/ArduinoBoardProMini
-[humidity-on-lcd-github]: https://github.com/dimalev/arduino-starters/tree/master/humidity-on-lcd
+[humidity-on-lcd-github]: https://github.com/dmytrolev/IoT/tree/master/humidity-on-lcd
