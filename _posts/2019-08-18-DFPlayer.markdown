@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "DFPlayer mp3 player"
+date:   2019-08-18 11:24:00 +0100
+category: controls
+---
+
+[DFPlayer Mini MP3 Player For Arduino](https://wiki.dfrobot.com/DFPlayer_Mini_SKU_DFR0299).

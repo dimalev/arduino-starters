@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "MAX7219CNG 8x8 LED matrics controller"
+date:   2019-08-18 11:24:00 +0100
+category: controls
+---
+
+[How to use SPI](https://www.arduino.cc/en/reference/SPI)
+
+[MAX7219 Datasheet](https://datasheets.maximintegrated.com/en/ds/MAX7219-MAX7221.pdf)
+
+[Using SPI to read a Barometric Pressure Sensor](https://www.arduino.cc/en/Tutorial/BarometricPressureSensor)
