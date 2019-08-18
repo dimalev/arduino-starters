@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Shift Registers and Arduino"
-date:   2016-07-14 01:29:55 +0300
+date:   2019-08-18 11:24:00 +0100
 category: controls
 ---
 
@@ -14,3 +14,9 @@ and get bigger pieces of memory.
 Reading is possible in the same way.
 
 [See how to use](https://www.youtube.com/watch?v=6BLj9Ak2Djs).
+
+[shiftOut() function](https://www.arduino.cc/reference/en/language/functions/advanced-io/shiftout/).
+
+[Arduino tutorial](https://www.arduino.cc/en/tutorial/ShiftOut).
+
+[Datasheet](http://www.ti.com/lit/ds/symlink/sn74hc595.pdf).
